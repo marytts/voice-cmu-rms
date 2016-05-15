@@ -1,0 +1,37 @@
+apply plugin: 'de.dfki.mary.voicebuilding-festvox'
+apply plugin: 'de.dfki.mary.voicebuilding-legacy'
+
+group 'de.dfki.mary'
+version '5.1.2'
+
+voice {
+    name = 'cmu-rms'
+    language = 'en'
+    region = 'US'
+    gender = 'male'
+    type = 'unit selection'
+    description = 'A male US English unit selection voice, built from recordings provided by Carnegie Mellon University'
+    license {
+        name = 'Arctic License'
+        shortName = 'Arctic'
+        url = 'http://mary.dfki.de/download/arctic-license.html'
+    }
+    samplingRate = 16000
+}
+
+repositories {
+    ivy {
+        url 'http://festvox.org/cmu_arctic/cmu_arctic/packed/'
+        layout 'pattern', {
+            artifact '[module]-[revision]-[classifier].[ext]'
+        }
+    }
+}
+
+dependencies {
+    data group: 'org.festvox', name: 'cmu_us_rms_arctic', version: '0.95', classifier: 'release', ext: 'tar.bz2'
+}
+
+legacyInit {
+    dependsOn wav, lab, text
+}
