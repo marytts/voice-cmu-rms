@@ -34,4 +34,19 @@ dependencies {
 
 legacyInit {
     dependsOn wav, lab, text
+    def basenameListFile = file("$buildDir/basenames.lst")
+    outputs.files basenameListFile
+    doLast {
+        basenameListFile.withWriter { basenameList ->
+            fileTree(wav.destDir).collect {
+                it.name - '.wav'
+            }.minus([
+                    'arctic_a0438',
+                    'arctic_a0439',
+                    'arctic_b0391'
+            ]).each {
+                basenameList.writeLine it
+            }
+        }
+    }
 }
