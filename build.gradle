@@ -2,7 +2,7 @@ apply plugin: 'de.dfki.mary.voicebuilding-festvox'
 apply plugin: 'de.dfki.mary.voicebuilding-legacy'
 
 group 'de.dfki.mary'
-version '5.1.2'
+version '5.2-SNAPSHOT'
 
 voice {
     name = 'cmu-rms'
