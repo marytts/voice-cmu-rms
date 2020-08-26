@@ -1,11 +1,12 @@
 plugins {
-    id 'de.dfki.mary.voicebuilding-festvox' version '5.2.2'
-    id 'de.dfki.mary.voicebuilding-legacy' version '5.2.2'
+    id 'de.dfki.mary.voicebuilding-festvox' version '5.5-SNAPSHOT'
+    id 'de.dfki.mary.voicebuilding-legacy' version '5.5-SNAPSHOT'
 }
 
 group 'de.dfki.mary'
 version '5.3-SNAPSHOT'
 
+marytts {
 voice {
     name = 'cmu-rms'
     language = 'en'
@@ -20,39 +21,55 @@ voice {
     }
     samplingRate = 16000
 }
+}
 
 repositories {
-    ivy {
-        url 'http://mary.dfki.de/repo'
-        layout 'maven'
+        ivy {
+        url 'https://dl.bintray.com/marytts/marytts'
+        patternLayout {
+            artifact '[organisation]/[module]/[artifact].[ext]'
+        }
+        metadataSources {
+            artifact()
+        }
     }
     ivy {
-        url 'http://festvox.org/cmu_arctic/cmu_arctic/packed/'
-        layout 'pattern', {
-            artifact '[module]-[revision]-[classifier].[ext]'
+        url 'http://festvox.org/cmu_arctic'
+        allowInsecureProtocol = true
+        patternLayout {
+            artifact 'cmu_arctic/packed/[artifact]-[revision]-[classifier].[ext]'
+        }
+        metadataSources {
+            artifact()
         }
     }
 }
 
 dependencies {
-    data group: 'org.festvox', name: 'cmu_us_rms_arctic', version: '0.95', classifier: 'release', ext: 'tar.bz2'
+    data group: 'org.festvox', name: 'cmu_us_bdl_arctic', version: '0.95', classifier: 'release', ext: 'tar.bz2'
 }
 
-legacyInit {
-    dependsOn wav, lab, text
-    def basenameListFile = file("$buildDir/basenames.lst")
-    outputs.files basenameListFile
-    doLast {
-        basenameListFile.withWriter { basenameList ->
-            fileTree(wav.destDir).collect {
-                it.name - '.wav'
-            }.minus([
-                    'arctic_a0438',
-                    'arctic_a0439',
-                    'arctic_b0391'
-            ]).each {
-                basenameList.writeLine it
-            }
-        }
+basenames {
+    textDir = text.destDir
+    labDir = lab.destDir
+    include '*'
+    exclude 'arctic_a0438',
+            'arctic_a0439',
+            'arctic_b0391'
+}
+
+generateAllophones {
+    srcDir = text.destDir
+}
+
+
+/*
+generateVoiceConfig {
+    afterEvaluate {
+        config << [
+                targetCostWeights: "jar:/marytts/voice/$marytts.voice.nameCamelCase/customTargetCostWeights.txt",
+                joinCostWeights  : "jar:/marytts/voice/$marytts.voice.nameCamelCase/customJoinCostWeights.txt",
+        ]
     }
 }
+*/
