@@ -63,13 +63,9 @@ generateAllophones {
 }
 
 
-/*
 generateVoiceConfig {
-    afterEvaluate {
-        config << [
-                targetCostWeights: "jar:/marytts/voice/$marytts.voice.nameCamelCase/customTargetCostWeights.txt",
-                joinCostWeights  : "jar:/marytts/voice/$marytts.voice.nameCamelCase/customJoinCostWeights.txt",
-        ]
-    }
+    config.putAll([
+            targetCostWeights: "jar:/marytts/voice/$marytts.voice.nameCamelCase/customTargetCostWeights.txt",
+            joinCostWeights  : "jar:/marytts/voice/$marytts.voice.nameCamelCase/customJoinCostWeights.txt",
+    ])
 }
-*/
