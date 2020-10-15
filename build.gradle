@@ -61,11 +61,3 @@ basenames {
 generateAllophones {
     srcDir = text.destDir
 }
-
-
-generateVoiceConfig {
-    config.putAll([
-            targetCostWeights: "jar:/marytts/voice/$marytts.voice.nameCamelCase/customTargetCostWeights.txt",
-            joinCostWeights  : "jar:/marytts/voice/$marytts.voice.nameCamelCase/customJoinCostWeights.txt",
-    ])
-}
